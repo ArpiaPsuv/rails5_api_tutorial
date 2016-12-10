@@ -5,17 +5,17 @@ class Api::V1::UsersController < Api::V1::BaseController
   def index
     auth_users = policy_scope(@users)
 
-    render jsonapi: auth_users.collection,
+    render json: auth_users.collection,
       each_serializer: Api::V1::UserSerializer,
-      fields: {user: auth_users.fields},
+      #fields: {user: auth_users.fields},
       meta: meta_attributes(auth_users.collection)
   end
 
   def show
     auth_user = authorize_with_permissions(@user)
 
-    render jsonapi: auth_user.record, serializer: Api::V1::UserSerializer,
-      fields: {user: auth_user.fields}
+    render json: auth_user.record, serializer: Api::V1::UserSerializer
+      #fields: {user: auth_user.fields}
   end
 
   #TODO: figure out if we could avoid returning anything here
@@ -23,7 +23,7 @@ class Api::V1::UsersController < Api::V1::BaseController
     auth_user = authorize_with_permissions(@user)
 
     if @user.save && @user.activate
-      render jsonapi: auth_user.record, serializer: Api::V1::UserSerializer,
+      render json: auth_user.record, serializer: Api::V1::UserSerializer,
         fields: {user: auth_user.fields}, status: 201, scope: @user
     else
       invalid_resource!(@user.errors)
@@ -34,7 +34,7 @@ class Api::V1::UsersController < Api::V1::BaseController
     auth_user = authorize_with_permissions(@user, :update?)
 
     if @user.update(update_params)
-      render jsonapi: auth_user.record, serializer: Api::V1::UserSerializer,
+      render json: auth_user.record, serializer: Api::V1::UserSerializer,
         fields: {user: auth_user.fields}
     else
       invalid_resource!(@user.errors)
@@ -46,7 +46,7 @@ class Api::V1::UsersController < Api::V1::BaseController
 
     @user.destroy!
 
-    render jsonapi: auth_user.record, serializer: Api::V1::UserSerializer,
+    render json: auth_user.record, serializer: Api::V1::UserSerializer,
       fields: {user: auth_user.fields}
   end
 
@@ -73,7 +73,7 @@ class Api::V1::UsersController < Api::V1::BaseController
 
     def normalized_params
       ActionController::Parameters.new(
-         ActiveModelSerializers::Deserialization.jsonapi_parse(params)
+         ActiveModelSerializers::Deserialization.json_parse(params)
       )
     end
 end

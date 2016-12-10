@@ -53,7 +53,7 @@ gem 'flexible_permissions'
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.5'
-  gem 'rspec-api_helpers', '0.2.1'
+  gem 'rspec-api_helpers', path: '../rspec-api_helpers'
   gem 'database_cleaner'
   gem 'factory_girl_rails'
   gem 'rspec-json_schema', :git => "git://github.com/blazed/rspec-json_schema.git", :branch => "feature/various_fixes"

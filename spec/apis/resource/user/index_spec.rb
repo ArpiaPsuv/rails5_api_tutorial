@@ -22,7 +22,24 @@ describe Api::V1::UsersController, '#index', type: :api do
       end
 
       it_returns_status(200)
-      it_follows_json_schema('regular/users')
+      it_returns_collection_size(resource: 'users', size: 6)
+      it_returns_collection_attributes(
+        resource: 'users', attrs: [
+          :id, :name, :email, :admin, :activated, :created_at, :updated_at
+        ]
+      )
+      it_returns_no_collection_attributes(
+        resource: 'users', attrs: [
+          :foo
+        ]
+      )
+
+      it_returns_collection_attribute_values(
+        resource: 'users', model: proc{User.first!}, attrs: [
+          :id, :name, :email, :admin, :activated, :created_at, :updated_at
+        ], modifiers: {[:created_at, :updated_at] => proc{|i| i.iso8601}}
+      )
+      #it_follows_json_schema('regular/users')
     end
 
     context 'when authenticated as an admin' do
@@ -34,7 +51,7 @@ describe Api::V1::UsersController, '#index', type: :api do
       end
 
       it_returns_status(200)
-      it_follows_json_schema('admin/users')
+      #it_follows_json_schema('admin/users')
     end
   end
 end
