@@ -1,4 +1,4 @@
-class Api::V1::BaseController < ActionController::Base
+class Api::V1::BaseController < ActionController::Base#inherit from API
   ALLOWED_ORIGINS = %w{
     http://localhost:4200
   }.freeze

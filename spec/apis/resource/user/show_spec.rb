@@ -8,6 +8,7 @@ describe Api::V1::UsersController, '#show', type: :api do
         @user = User.last!
 
         get api_v1_user_path(@user.id)
+        puts last_response.body
       end
 
       it_returns_status(401)
@@ -28,11 +29,14 @@ describe Api::V1::UsersController, '#show', type: :api do
       it_returns_attribute_values(
         resource: 'user', model: proc{@user}, attrs: [
           :id, :name, :email, :admin, :activated, :created_at, :updated_at
-        ], modifiers: {[:created_at, :updated_at] => proc{|i| i.iso8601}}
+        ], modifiers: {
+          [:created_at, :updated_at] => proc{|i| i.iso8601},
+          [:id] => proc{|i| i.to_s}
+        }
       )
 
       it_returns_no_attributes(
-        resource: 'user', model: proc{@user}, attrs: [
+        resource: 'user', attrs: [
           :foo1, :foo2, :foo3
         ]
       )

@@ -26,7 +26,7 @@ PATH
 PATH
   remote: ../rspec-api_helpers
   specs:
-    rspec-api_helpers (0.2.1)
+    rspec-api_helpers (1.0.0)
 
 GEM
   remote: https://rubygems.org/

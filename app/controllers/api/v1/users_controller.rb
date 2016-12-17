@@ -5,7 +5,7 @@ class Api::V1::UsersController < Api::V1::BaseController
   def index
     auth_users = policy_scope(@users)
 
-    render json: auth_users.collection,
+    render jsonapi: auth_users.collection,
       each_serializer: Api::V1::UserSerializer,
       #fields: {user: auth_users.fields},
       meta: meta_attributes(auth_users.collection)
@@ -14,7 +14,7 @@ class Api::V1::UsersController < Api::V1::BaseController
   def show
     auth_user = authorize_with_permissions(@user)
 
-    render json: auth_user.record, serializer: Api::V1::UserSerializer
+    render jsonapi: auth_user.record, serializer: Api::V1::UserSerializer
       #fields: {user: auth_user.fields}
   end
 
@@ -23,7 +23,7 @@ class Api::V1::UsersController < Api::V1::BaseController
     auth_user = authorize_with_permissions(@user)
 
     if @user.save && @user.activate
-      render json: auth_user.record, serializer: Api::V1::UserSerializer,
+      render jsonapi: auth_user.record, serializer: Api::V1::UserSerializer,
         fields: {user: auth_user.fields}, status: 201, scope: @user
     else
       invalid_resource!(@user.errors)
@@ -34,7 +34,7 @@ class Api::V1::UsersController < Api::V1::BaseController
     auth_user = authorize_with_permissions(@user, :update?)
 
     if @user.update(update_params)
-      render json: auth_user.record, serializer: Api::V1::UserSerializer,
+      render jsonapi: auth_user.record, serializer: Api::V1::UserSerializer,
         fields: {user: auth_user.fields}
     else
       invalid_resource!(@user.errors)
@@ -46,7 +46,7 @@ class Api::V1::UsersController < Api::V1::BaseController
 
     @user.destroy!
 
-    render json: auth_user.record, serializer: Api::V1::UserSerializer,
+    render jsonapi: auth_user.record, serializer: Api::V1::UserSerializer,
       fields: {user: auth_user.fields}
   end
 
